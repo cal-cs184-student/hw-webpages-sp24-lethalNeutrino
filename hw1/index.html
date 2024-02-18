@@ -15,6 +15,8 @@
 	</head>
 	<body>
 		<a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw1/index.html">https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw1/index.html</a>
+		<h1>Overview</h1>
+		<p>In this homework, I implemented a basic rasterizer that is capable of rendering svg images. It is able to render triangles of solid colors or interpolated colors between the three vertices, and triangles that are mapped to textures. In addition, I implemented supersampling for antialiasing of all triangles, and bilinear, trilinear, and nearest-level sampling for textured triangles. The most interesting thing that I learned was the math behind the graphics, especially since I do a lot of vector art and illustration, learning the math behind it was super cool, especially for barycentric coordinates, since I use that a lot in creating graphs and diagrams. </p>
 		<h1>Task 1</h1>
 		<p> To ensure that the winding order of the triangles is consistent, I take the cross product of two edges, and if the cross product of these two edges is negative, then I swap the non-shared points of the two vectors, resulting in a consistent counter-clockwise winding order. Then, I iterate through each pixel (or subpixel) in the bounding box and perform a line test on the pixel to determine if it is within the triangle. If it is, then I assign the pixel a color in the sample buffer, and render the resulting buffer to the screen. Since I check each point in the bounding box once, my implementation performs exactly as well as an implementation that checks each point once. Below is an image of test4.svg:
 		</p>
