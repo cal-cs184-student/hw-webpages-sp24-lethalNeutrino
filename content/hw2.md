@@ -1,5 +1,5 @@
 +++
-title = "Basic Markdown syntax"
+title = "Homework 2: MeshEdit"
 template = "page.html"
 date = 2020-01-02T15:00:00Z
 [extra]
@@ -7,132 +7,36 @@ summary = "Shows how basic Markdown syntax are rendered"
 mathjax = "tex-mml"
 +++
 
-<!-- more -->
+# Table of Contents
+## Section 1: Bezier curves and surfaces
+#### [Task 1: Bezier curves with 1D de Casteljau subdivision](task1)
+#### [Task 2: Bezier surfaces with separable 1D de Casteljau](task2)
+# Section 2: Triangle meshes and the half-edge data structure
+#### [Task 3: Area-weighted vertex normals](task3)
+#### [Task 4: Edge flip](task4)
+#### [Task 5: Edge split](task5)
+#### [Task 6: Loop subdivision for mesh upsampling](task6)
 
-## Headings
+# Introduction
+This homework came in two parts.
+The first part was a simple exercise in drawing Bezier curves and surfaces, which involved implementing the method of de Casteljau subdivision.
+This process involves looping over a sequence of control points and interpolating between them (according to a parameter $t$) in a specific way to result in a smoothly curved surface, when ranging $t$ between 0 and 1.
 
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+This second part of the homework was about another common method of 3D geometric modeling: *meshes*.
+To be specific, we implemented some standard features of a triangular mesh (with an underlying *half-edge* data structure), like Phong shading via weighted area normal vectors and loop subdivision for mesh upscaling.
+These features enhance the visual appearance of a mesh modeled around some object; Phong shading allows interpolated shading along the face of a single triangle to make the shading look continuous, and upscaling a mesh gives more detail and smooths out harsh edges in a mesh with few polygons.
 
-# H1
-## H2
-### H3
-#### H4
-##### H5
-###### H6
+Overall, \(reflection on project goes here\)
 
-## Paragraph
+# Showcase
+## [Task 1: Bezier curves with 1D de Casteljau subdivision](task1)
+![Bezier curve render example](../hw2/task1-full-curve.png)
+## [Task 2: Bezier surfaces with separable 1D de Casteljau](task2)
 
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
+## [Task 3: Area-weighted vertex normals](task3)
 
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
+## [Task 4: Edge flip](task4)
 
-## Blockquotes
+## [Task 5: Edge split](task5)
 
-The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a `footer` or `cite` element, and optionally with in-line changes such as annotations and abbreviations.
-
-#### Blockquote without attribution
-
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.
-> **Note** that you can use *Markdown syntax* within a blockquote.
-
-#### Blockquote with attribution
-
-> Don't communicate by sharing memory, share memory by communicating.</p>
-> — <cite>Rob Pike[^1]</cite>
-
-[^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
-
-## Tables
-
-Tables aren't part of the core Markdown spec, but Hugo supports supports them out-of-the-box.
-
-   Name | Age
---------|------
-    Bob | 27
-  Alice | 23
-
-#### Inline Markdown within tables
-
-| Inline&nbsp;&nbsp;&nbsp;     | Markdown&nbsp;&nbsp;&nbsp;  | In&nbsp;&nbsp;&nbsp;                | Table      |
-| ---------- | --------- | ----------------- | ---------- |
-| *italics*  | **bold**  | ~~strikethrough~~&nbsp;&nbsp;&nbsp; | `code`     |
-
-## Code Blocks
-
-#### Code block with backticks
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Example HTML5 Document</title>
-</head>
-<body>
-  <p>Test</p>
-</body>
-</html>
-```
-#### Code block indented with four spaces
-
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>Example HTML5 Document</title>
-    </head>
-    <body>
-      <p>Test</p>
-    </body>
-    </html>
-
-## List Types
-
-#### Ordered List
-
-1. First item
-2. Second item
-3. Third item
-
-#### Unordered List
-
-* List item
-* Another item
-* And another item
-
-#### Nested list
-
-* Item
-    1. First Sub-item
-    2. Second Sub-item
-* Item
-    - A
-    - B
-
-## Other Elements — abbr, sub, sup, kbd, mark
-
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
-
-H<sub>2</sub>O
-
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
-
-Press <kbd><kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd></kbd> to end the session.
-
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
-
-## mathjax
-
-$$
-\displaylines{x = a + b \\\\ y = b + c}
-$$
-
-$$
-\require{bussproofs}
-\begin{prooftree}
-\AxiomC{A}
-\AxiomC{B}
-\BinaryInfC{D}
-\end{prooftree}
-$$
-
+## [Task 6: Loop subdivision for mesh upsampling](task6)
