@@ -1,5 +1,5 @@
 +++
-title = "Homework 1 — Rasterizer"
+title = "Homework 1: Rasterizer"
 template = "page.html"
 date = 2024-02-13T12:00:00Z
 [extra]
