@@ -42,10 +42,29 @@ Beyond that, though, the most interesting thing I learned was learning how Phong
 
 ## [Task 2: Bezier surfaces with separable 1D de Casteljau](task2)
 
+<p style = "text-align:center">
+	<img src="./task2-example.png" width="50%" style="text-align:center"/>
+</p>
+
 ## [Task 3: Area-weighted vertex normals](task3)
+<p style = "text-align:center">
+	<img src="./task3-phong-shading.png" alt="teapot with Phong shading" width="50%" style="text-align:center"/>
+</p>
 
 ## [Task 4: Edge flip](task4)
+<p style = "text-align:center">
+	<img src="./flipped_teapot.png" alt="a mesh of a teapot with a few edges flipped" width="50%" style="text-align:center"/>
+</p>
 
 ## [Task 5: Edge split](task5)
 
+<p style = "text-align:center">
+	<img src="./split.png" alt="a diagram showing the edge split operation" width="40%" style="text-align:center"/>
+	<img src="./split-flip.png" alt="a diagram showing the edge split operation" width="40%" style="text-align:center"/>
+</p>
+
 ## [Task 6: Loop subdivision for mesh upsampling](task6)
+<p style="text-align:center">
+<img src="./cow0.png" style="width:20%"> <img src="./cow-no-mesh0.png" style="width:20%">
+<img src="./cow3.png" style="width:20%"> <img src="./cow-no-mesh3.png" style="width:20%"><br>
+</p>
