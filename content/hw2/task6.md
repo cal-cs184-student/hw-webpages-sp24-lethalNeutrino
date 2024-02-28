@@ -33,7 +33,7 @@ It may seem surprising that steps 3 and 4 actually do divide every triangle in t
 However, we can just consider an arbitrary triangle in the mesh; we split its three edges in some arbitrary order.
 
 <p style = "text-align:center">
-	<img src="./task6-subdivision-proof.png" alt="Diagram of equivalence between subdivision generation methods" width="60%" style="text-align:center"/>
+	<img src="./task6-subdivision-proof.png" alt="Diagram of equivalence between subdivision generation methods" width="30%" style="text-align:center"/>
 </p>
 
 In this diagram, we split the red outer edge first giving us the red edge through the triangle, then we split the blue and green outer edges in any order giving us the other blue and green edges.
@@ -96,20 +96,20 @@ Left: The cube mesh preprocessed with face-edge splitting displayed at 4 levels 
 Notice how in the example where the cube was split rather than flipped, the corners experience a relatively smaller movement inwards, as they are now closer to their neighbors. Had the mesh been further subdivided symmetrically, the shrinking effect would have been further reduced, as shown below:
 
 <p style="text-align:center">
-<img src="./cubesplitsplit0.png" style="width:20%"> 
-<img src="./cubesplitsplit1.png" style="width:20%"> 
-<img src="./cubesplitsplit2.png" style="width:20%"> 
-<img src="./cubesplitsplit3.png" style="width:20%"> 
+<img src="./cubesplit0.png" style="width:20%"> 
+<img src="./cubesplit1.png" style="width:20%"> 
+<img src="./cubesplit2.png" style="width:20%"> 
+<img src="./cubesplit3.png" style="width:20%"> 
 <br>
-<img src="./cubesplitsplitsplit0.png" style="width:20%"> 
-<img src="./cubesplitsplitsplit1.png" style="width:20%"> 
-<img src="./cubesplitsplitsplit2.png" style="width:20%"> 
-<img src="./cubesplitsplitsplit3.png" style="width:20%"> 
+<img src="./cubesplit0.png" style="width:20%"> 
+<img src="./cubesplit1.png" style="width:20%"> 
+<img src="./cubesplit2.png" style="width:20%"> 
+<img src="./cubesplit3.png" style="width:20%"> 
 <br>
-<img src="./cubesplitsplitsplitsplit0.png" style="width:20%"> 
-<img src="./cubesplitsplitsplitsplit1.png" style="width:20%"> 
-<img src="./cubesplitsplitsplitsplit2.png" style="width:20%"> 
-<img src="./cubesplitsplitsplitsplit3.png" style="width:20%"> 
+<img src="./cubesplit0.png" style="width:20%"> 
+<img src="./cubesplit1.png" style="width:20%"> 
+<img src="./cubesplit2.png" style="width:20%"> 
+<img src="./cubesplit3.png" style="width:20%"> 
 </p>
 
 Overall, the lesson to take away is that even if the original mesh defines a shape, it's possible that the result after levels of subdivision is asymmetric, if the vertices are not all symmetric with respect to each other. The edges leading into vertices will each "tug" on that vertex, and the end result will be heavily influenced by any vertex asymmetries.
