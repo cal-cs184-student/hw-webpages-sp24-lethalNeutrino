@@ -11,8 +11,8 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v3
         with:
-          find: "\"./"
-          replace: "\"../"
+          find: "./"
+          replace: "../"
           regex: false
           include: "content/hw*/**"
       - name: build_and_deploy
