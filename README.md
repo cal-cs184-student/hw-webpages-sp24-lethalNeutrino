@@ -9,3 +9,7 @@ To enable Github pages, go to the 'Settings' tab then click on 'Pages'. Under 'B
 ## Adding Homework Webpages
 
 There are 4 folders, one for each homework. Each contains an index.html file. When the links from the mainpage are clicked, these files will be loaded, so edit these to add your homework webpages.
+
+## Link
+
+The website can be found at https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/
