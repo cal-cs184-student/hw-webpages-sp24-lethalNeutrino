@@ -24,12 +24,12 @@ Then, the first step is to linearly interpolate between the \\(n\\) consecutive 
 From here, we just repeat the process: now we have \\(n-1\\) control points, and we iterate repeatedly until we get down to 1 point left (using the same parameter \\(t\\) at each step). Here's what that looks like:
 
 <p style = "text-align:center">
-	<img src="./task1-example-iter2.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
-	<img src="./task1-example-iter3.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter2.png" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter3.png" width="40%" style="text-align:center"/>
 </p>
 <p style = "text-align:center">
-	<img src="./task1-example-iter4.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
-	<img src="./task1-example-iter5.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter4.png" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter5.png" width="40%" style="text-align:center"/>
 </p>
 
 The red point is the end result of the iteration, and this point is the point on the Bezier curve corresponding to the parameter \\(t = 0.5\\).
