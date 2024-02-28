@@ -8,8 +8,16 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: "./"
+          replace: "../"
+          regex: false
+          includes: "content/**"
       - name: build_and_deploy
         uses: shalzz/zola-deploy-action@v0.17.2
+
         env:
           # Target branch
           PAGES_BRANCH: gh-pages
