@@ -14,7 +14,7 @@ jobs:
           find: "./"
           replace: "../"
           regex: false
-          include: "content/**"
+          include: "content/hw*/**"
       - name: build_and_deploy
         uses: shalzz/zola-deploy-action@v0.17.2
 
