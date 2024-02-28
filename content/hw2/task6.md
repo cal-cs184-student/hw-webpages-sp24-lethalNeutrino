@@ -96,20 +96,20 @@ Left: The cube mesh preprocessed with face-edge splitting displayed at 4 levels 
 Notice how in the example where the cube was split rather than flipped, the corners experience a relatively smaller movement inwards, as they are now closer to their neighbors. Had the mesh been further subdivided symmetrically, the shrinking effect would have been further reduced, as shown below:
 
 <p style="text-align:center">
-<img src="./cubesplit0.png" style="width:20%"> 
-<img src="./cubesplit1.png" style="width:20%"> 
-<img src="./cubesplit2.png" style="width:20%"> 
-<img src="./cubesplit3.png" style="width:20%"> 
+<img src="./cubesplitsplit0.png" style="width:20%"> 
+<img src="./cubesplitsplit1.png" style="width:20%"> 
+<img src="./cubesplitsplit2.png" style="width:20%"> 
+<img src="./cubesplitsplit3.png" style="width:20%"> 
 <br>
-<img src="./cubesplit0.png" style="width:20%"> 
-<img src="./cubesplit1.png" style="width:20%"> 
-<img src="./cubesplit2.png" style="width:20%"> 
-<img src="./cubesplit3.png" style="width:20%"> 
+<img src="./cubesplitsplitsplit0.png" style="width:20%"> 
+<img src="./cubesplitsplitsplit1.png" style="width:20%"> 
+<img src="./cubesplitsplitsplit2.png" style="width:20%"> 
+<img src="./cubesplitsplitsplit3.png" style="width:20%"> 
 <br>
-<img src="./cubesplit0.png" style="width:20%"> 
-<img src="./cubesplit1.png" style="width:20%"> 
-<img src="./cubesplit2.png" style="width:20%"> 
-<img src="./cubesplit3.png" style="width:20%"> 
+<img src="./cubesplitsplitsplitsplit0.png" style="width:20%"> 
+<img src="./cubesplitsplitsplitsplit1.png" style="width:20%"> 
+<img src="./cubesplitsplitsplitsplit2.png" style="width:20%"> 
+<img src="./cubesplitsplitsplitsplit3.png" style="width:20%"> 
 </p>
 
 Overall, the lesson to take away is that even if the original mesh defines a shape, it's possible that the result after levels of subdivision is asymmetric, if the vertices are not all symmetric with respect to each other. The edges leading into vertices will each "tug" on that vertex, and the end result will be heavily influenced by any vertex asymmetries.
