@@ -13,7 +13,6 @@ To be more specific, we actually interpolate the normal vector to the specific p
 Finally, the normal vector at the point is interpolated with the same weights assigned to the barycentric coordinates (like in Rasterizer: Task 4).
 
 This gives a smooth color gradient of shades along the polygon according to the light source, and can also accurately capture highlights that would be missed by simply interpolating the colors themselves at each vertex (which is known as Gouraud shading), although Phong shading is more expensive computationally.
-
 ## Traversing the faces with the halfedge mesh
 Our task was to compute the weighted sum of the area vectors over all faces that the input vertex is part of. (This vector is later normalized to appropriately compute the color shade.) In order to do this, we needed to be able to somehow iterate over all of the relevant faces and compute their area normal vectors. This involved traversing the halfedge mesh data structure, which requires a more in-depth explanation.
 
@@ -57,6 +56,6 @@ And that's the algorithm. Our actual implementation collected neighboring vertic
 ## How does it look?
 The end result is really a quite substantial visual improvement, so much so I think I don't need to say which is flat shading and which is Phong (although it comes at quite a cost computationally, so you could also determine the difference by looking at the framerate in the bottom left corner):
 <p style = "text-align:center">
-	<img src="./hw2/task3-flat-shading.png" alt="teapot with flat shading" width="40%" style="text-align:center"/>
-	<img src="./hw2/task3-phong-shading.png" alt="teapot with Phong shading" width="40%" style="text-align:center"/>
+	<img src="./task3-flat-shading.png" alt="teapot with flat shading" width="40%" style="text-align:center"/>
+	<img src="./task3-phong-shading.png" alt="teapot with Phong shading" width="40%" style="text-align:center"/>
 </p>
