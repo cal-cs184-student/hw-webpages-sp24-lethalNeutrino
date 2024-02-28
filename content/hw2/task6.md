@@ -36,12 +36,12 @@ In particular, we set the vertex's `newPosition` field during the edge split ope
 In general, objects will turn smoother after being upsampled with loop-subdivision. Below are three sets of upsampled meshes:
 
 <p style="text-align:center">
-<img src="../hw2/teapot0.png" style="width:20%"> <img src="../hw2/teapot-no-mesh0.png" style="width:20%">
-<img src="../hw2/teapot2.png" style="width:20%"> <img src="../hw2/teapot-no-mesh2.png" style="width:20%"><br>
-<img src="../hw2/cow0.png" style="width:20%"> <img src="../hw2/cow-no-mesh0.png" style="width:20%">
-<img src="../hw2/cow3.png" style="width:20%"> <img src="../hw2/cow-no-mesh3.png" style="width:20%"><br>
-<img src="../hw2/torus0.png" style="width:20%"> <img src="../hw2/torus-no-mesh0.png" style="width:20%">
-<img src="../hw2/torus3.png" style="width:20%"> <img src="../hw2/torus-no-mesh3.png" style="width:20%"><br>
+<img src="./teapot0.png" style="width:20%"> <img src="./teapot-no-mesh0.png" style="width:20%">
+<img src="./teapot2.png" style="width:20%"> <img src="./teapot-no-mesh2.png" style="width:20%"><br>
+<img src="./cow0.png" style="width:20%"> <img src="./cow-no-mesh0.png" style="width:20%">
+<img src="./cow3.png" style="width:20%"> <img src="./cow-no-mesh3.png" style="width:20%"><br>
+<img src="./torus0.png" style="width:20%"> <img src="./torus-no-mesh0.png" style="width:20%">
+<img src="./torus3.png" style="width:20%"> <img src="./torus-no-mesh3.png" style="width:20%"><br>
 TODO: write caption
 </p>
 
@@ -51,11 +51,11 @@ TODO: write caption
 When upsampling the cube as is, we notice a bit of asymmetry, displayed below: 
 
 <p style="text-align:center">
-<img src="../hw2/cube1.png" style="width:40%">
-<img src="../hw2/cube2.png" style="width:40%">
-<img src="../hw2/cube3.png" style="width:40%">
-<img src="../hw2/cube4.png" style="width:40%">
-<img src="../hw2/cube5.png" style="width:40%">
+<img src="./cube1.png" style="width:40%">
+<img src="./cube2.png" style="width:40%">
+<img src="./cube3.png" style="width:40%">
+<img src="./cube4.png" style="width:40%">
+<img src="./cube5.png" style="width:40%">
 <br>
 Above: the original cube mesh displayed at 4 level of subdivision. The last image, which is a picture of the cube at a different rotation shows the asymmetry.
 </p>
@@ -66,11 +66,11 @@ To fix this, we can take two approaches: the first is to simply split all the fa
 
 
 <p style="text-align:center">
-<img src="../hw2/cubesplit1.png" style="width:30%">  <img src="../hw2/cubeflip1.png" style="width:30%"> <br>
-<img src="../hw2/cubesplit2.png" style="width:30%">  <img src="../hw2/cubeflip2.png" style="width:30%"> <br>
-<img src="../hw2/cubesplit3.png" style="width:30%">  <img src="../hw2/cubeflip3.png" style="width:30%"> <br>
-<img src="../hw2/cubesplit4.png" style="width:30%">  <img src="../hw2/cubeflip4.png" style="width:30%"> <br>
-<img src="../hw2/cubesplit5.png" style="width:30%">  <img src="../hw2/cubeflip5.png" style="width:30%"> <br>
+<img src="./cubesplit1.png" style="width:30%">  <img src="./cubeflip1.png" style="width:30%"> <br>
+<img src="./cubesplit2.png" style="width:30%">  <img src="./cubeflip2.png" style="width:30%"> <br>
+<img src="./cubesplit3.png" style="width:30%">  <img src="./cubeflip3.png" style="width:30%"> <br>
+<img src="./cubesplit4.png" style="width:30%">  <img src="./cubeflip4.png" style="width:30%"> <br>
+<img src="./cubesplit5.png" style="width:30%">  <img src="./cubeflip5.png" style="width:30%"> <br>
 <br>
 Left: The cube mesh preprocessed with face-edge splitting displayed at 4 levels of subdivision. The bottom image shows it from a different angle to show that it has retained the symmetries of a cube. Right: The cube mesh preprocessed with face-edge flipping displayed at 4 levels of subdivision. The bottom image shows it from a different angle to show that it retains an axis of rotational symmetry but has no mirror symmetries.
 </p>
