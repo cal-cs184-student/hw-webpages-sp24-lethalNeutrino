@@ -12,24 +12,24 @@ So, Bezier curves provide an alternative strategy for drawing curves that doesn'
 ## Okay, but how do you draw that?
 To define a Bezier curve in more detail, we need to be more specific about how these control points actually control the curve. So, to actually define the points on a Bezier curve, we have some number of control points and a parameter \\(t\\) ranging from 0 to 1. Let's call our \\(n\\) control points \\(P_{1,0}, P_{2,0}, \cdots, P_{n,0}\\). In the case below, \\(n = 6\\), and \\(t = 0.5\\).
 <p style = "text-align:center">
-	<img src="../hw2/task1-example-iter0.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter0.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
 </p>
 
 Then, the first step is to linearly interpolate between the \\(n\\) consecutive points a proportion of \\(t\\) along each segment \\(\overline{P_{i,0}P_{i+1,0}}\\) to get the point \\(P_{i, 1}\\). This will give you \\(n-1\\) points \\(P_{1,1}, P_{2,1}, \cdots, P_{n-1, 1}\\).
 
 <p style = "text-align:center">
-	<img src="../hw2/task1-example-iter1.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter1.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
 </p>
 
 From here, we just repeat the process: now we have \\(n-1\\) control points, and we iterate repeatedly until we get down to 1 point left (using the same parameter \\(t\\) at each step). Here's what that looks like:
 
 <p style = "text-align:center">
-	<img src="../hw2/task1-example-iter2.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
-	<img src="../hw2/task1-example-iter3.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter2.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter3.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
 </p>
 <p style = "text-align:center">
-	<img src="../hw2/task1-example-iter4.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
-	<img src="../hw2/task1-example-iter5.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter4.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-example-iter5.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
 </p>
 
 The red point is the end result of the iteration, and this point is the point on the Bezier curve corresponding to the parameter \\(t = 0.5\\).
@@ -39,17 +39,17 @@ The red point is the end result of the iteration, and this point is the point on
 In fact, the procedure described above is the method of de Casteljau subdivision for computing points of a Bezier curve. There is another algebraic definition of a Bezier curve, but understanding that definition intuitively requires going through this procedure anyway. So, we thought it made more sense to just define the Bezier curve by the recursive process instead. The Bezier curve in full, then, is a function that takes in this parameter \\(t\\) on the interval \\([0,1]\\) and returns a point by executing this procedure. When the whole curve is rendered at the same time, it looks like this (in green):
 
 <p style = "text-align:center">
-	<img src="../hw2/task1-full-curve.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-full-curve.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
 </p>
 
 Notice that the first and last control point are always the endpoints of the curve; they correspond to the points at \\(t=0\\) and \\(t=1\\). If we adjust the parameter \\(t\\), we can see that the point lands on a different part of the curve:
 
 <p style = "text-align:center">
-	<img src="../hw2/task1-full-curve-lowt.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-full-curve-lowt.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
 </p>
 
 We can adjust the curve by moving the control points. One simple adjustment we can make is to "pull" the curve downwards towards the end by moving down a later control point, as shown below: 
 
 <p style = "text-align:center">
-	<img src="../hw2/task1-adj-curve.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
+	<img src="./task1-adj-curve.png" alt="a diagram showing the edge flip operation" width="40%" style="text-align:center"/>
 </p>

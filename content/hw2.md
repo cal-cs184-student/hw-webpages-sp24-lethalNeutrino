@@ -30,7 +30,10 @@ Overall, \(reflection on project goes here\)
 
 # Showcase
 ## [Task 1: Bezier curves with 1D de Casteljau subdivision](task1)
-![Bezier curve render example](../hw2/task1-full-curve.png)
+<p style="text-align:center">
+<img src="./task1-full-curve.png" style = "width:50%">
+</p>
+
 ## [Task 2: Bezier surfaces with separable 1D de Casteljau](task2)
 
 ## [Task 3: Area-weighted vertex normals](task3)
