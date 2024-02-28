@@ -57,6 +57,6 @@ And that's the algorithm. Our actual implementation collected neighboring vertic
 ## How does it look?
 The end result is really a quite substantial visual improvement, so much so I think I don't need to say which is flat shading and which is Phong (although it comes at quite a cost computationally, so you could also determine the difference by looking at the framerate in the bottom left corner):
 <p style = "text-align:center">
-	<img src="../hw2/task3-flat-shading.png" alt="teapot with flat shading" width="40%" style="text-align:center"/>
-	<img src="../hw2/task3-phong-shading.png" alt="teapot with Phong shading" width="40%" style="text-align:center"/>
+	<img src="./hw2/task3-flat-shading.png" alt="teapot with flat shading" width="40%" style="text-align:center"/>
+	<img src="./hw2/task3-phong-shading.png" alt="teapot with Phong shading" width="40%" style="text-align:center"/>
 </p>
