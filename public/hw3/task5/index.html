@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en"  class="theme--light" >
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-57x57.png" />
+  <link rel="short icon" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+  <title> • Task 5: Edge Splitting</title>
+  
+  
+  
+</head>
+
+<body>
+  <div id="sidebar" class="animated fadeInDown">
+    <div class="logo-title">
+      <div class="title">
+        <img src=https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/cow.png style="width:80%;" alt="logo" />
+        <h3><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/"></a></h3>
+        <div class="description">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+    <div class="footer">
+      
+      <span>Designed by </span><a href="https://www.caicai.me">CaiCai</a>
+      <div class="by_zola"><a href="https://www.getzola.org/" target="_blank">Proudly published with Zola!</a></div>
+      
+    </div>
+  </div>
+  <div id="main">
+    <div class="page-top animated fadeInDown">
+      <div class="nav">
+        
+        
+        
+        
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/">Home</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw1/">Homework 1</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw2/">Homework 2</a></li>
+        <li><a class="current"  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw3/">Homework 3</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw4/">Homework 4</a></li>
+      </div>
+      <div class="information">
+        <div class="back_btn">
+          <a onclick="window.history.go(-1)" ><i
+              class="fas fa-chevron-left"></i></a>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+    <div class="autopagerize_page_element">
+      <div class="content">
+        
+<article class="post animated fadeInDown">
+  <h1><a href="https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task5&#x2F;">Task 5: Edge Splitting</a></h1>
+  
+  <div class="post-content"><h2 id="the-theory">The Theory</h2>
+<p>To split an edge, we drew the following diagram on a whiteboard and stared at it for 20 minutes:</p>
+<p style = "text-align:center">
+	<img src="./edge_split.png" alt="a diagram showing the edge split operation" width="50%" style="text-align:center"/>
+</p>
+<p>Then, we created the new elements needed, namely $m, h_2, h_3, h_4, h_5, h_6, h_7, e_1, e_2, e_3, f_2,$ and $f_3$. After that, we began the long list of pointer assignments:</p>
+<ul>
+<li>Faces
+<ul>
+<li>In order, $h_1$, $h_2$, and $ba$ form a face (i.e. $h_1$'s next halfedge is $h_2$, and so on), and $f_1$'s halfedge was assigned to one of these 3</li>
+<li>$h_3$, $h_4$, and $cb$ form a face, and $f_2$'s halfedge was assigned to one of these 3</li>
+<li>$h_5$, $h_6$, and $dc$ form a face, and $f_3$'s halfedge was assigned to one of these 3</li>
+<li>$h_7$, $h_0$, and $ad$ form a face, and $f_0$'s halfedge was assigned to one of these 3</li>
+</ul>
+</li>
+<li>Edges
+<ul>
+<li>$h_0$ and $h_1$ make up $e_0$, and $e_0$'s halfedge was assigned to one of these 2</li>
+<li>$h_2$ and $h_3$ make up $e_1$, and $e_1$'s halfedge was assigned to one of these 2</li>
+<li>$h_4$ and $h_5$ make up $e_2$, and $e_2$'s halfedge was assigned to one of these 2</li>
+<li>$h_6$ and $h_7$ make up $e_3$, and $e_3$'s halfedge was assigned to one of these 2</li>
+</ul>
+</li>
+<li>Vertices
+<ul>
+<li>$m$'s halfedge was assigned to $h_0$</li>
+<li>Other vertices had no halfedge changes</li>
+<li>Halfedges $h_0, h_2, h_4, h_6$ were assigned the vertex $m$</li>
+<li>Halfedges $h_1, h_3, h_5, h_7$ were assigned the vertices $a,b,c,d$, respectively</li>
+</ul>
+</li>
+<li>Halfedges 
+<ul>
+<li>Lastly, we twinned the halfedges: </li>
+<li>$h_0$ and $h_1$ are twins</li>
+<li>$h_2$ and $h_3$ are twins</li>
+<li>$h_4$ and $h_5$ are twins</li>
+<li>$h_6$ and $h_7$ are twins</li>
+</ul>
+</li>
+</ul>
+<h2 id="the-practice">The practice</h2>
+<p>Through staring at the diagram sufficiently long, and learning that you can assign to a return value of a function from task 4, our implementation worked first try, and we spent non-trivial time splitting edges and trying to prove that our implementation was broken. It in fact, was not broken. Below are images of split edges and split and flipped edges:</p>
+<p style = "text-align:center">
+	<img src="./split.png" alt="a diagram showing the edge split operation" width="40%" style="text-align:center"/>
+	<img src="./split-flip.png" alt="a diagram showing the edge split operation" width="40%" style="text-align:center"/>
+</p>
+</div>
+  <div class="post-footer">
+    <div class="meta">
+      <div class="info">
+        
+        <i class="far fa-sun"></i><span class="date">2024-02-28</span>
+        
+        
+      </div>
+    </div>
+  </div>
+</article>
+<div class="share">
+  <div class="weibo">
+    <a class="fab fa-weibo"
+      href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&title=',e(d.title),'&appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a>
+  </div>
+  <div class="twitter">
+    <a class="fab fa-twitter"
+      href="http://twitter.com/share?text=Task 5: Edge Splitting&url=https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task5&#x2F;"></a>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$'], ["\\[", "\\]"]],
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+
+
+
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function showLanguages() {
+      let currentDisplay = document.getElementById("languages").style.display;
+      if (currentDisplay == 'none') {
+        document.getElementById("languages").style.display = 'block';
+      } else {
+        document.getElementById("languages").style.display = 'none';
+      }
+    }
+  </script>
+</body>
+
+</html>
