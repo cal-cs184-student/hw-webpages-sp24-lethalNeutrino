@@ -49,7 +49,7 @@ Samples of global illumination. Note the color of the walls reflecting onto the 
 
 <p style="text-align:center">
 <img src="./bunny_direct_only.png" style="width:33%">
-<img src="./bunny_noAccum_2.png" style="width:33%">
+<img src="./bunny_indirect_only.png" style="width:33%">
 <br>
 The bunny with direct lighting only and indirect lighting only.
 </p>
