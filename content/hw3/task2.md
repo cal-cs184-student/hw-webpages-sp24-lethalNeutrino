@@ -31,7 +31,20 @@ Below, we compare output times of rendering the (really cute) Cow with and witho
     [PathTracer] Job completed.                                                 [PathTracer] Job completed.
 ```
 
-Notice how adding in the BVH reduced the render time from 21.9 seconds to 0.156 seconds — a dramatic speedup. (and really satisfying to run)
+Notice how adding in the BVH reduced the render time from 21.9 seconds to 0.156 seconds — a dramatic speedup. (and really satisfying to run) Below is another example, using the teapot:
+
+```                                                                     
+[PathTracer] Input scene file: ../dae/meshedit/cow.dae                          [PathTracer] Input scene file: ../dae/meshedit/teapot.dae
+[PathTracer] Rendering using 8 threads                                          [PathTracer] Rendering using 8 threads                                  
+[PathTracer] Collecting primitives... Done! (0.0002 sec)                        [PathTracer] Collecting primitives... Done! (0.0006 sec)                
+[PathTracer] Building BVH from 2464 primitives... Done! (0.0030 sec)            [PathTracer] Building BVH from 5856 primitives... Done! (0.0000 sec)    
+[PathTracer] Rendering... 100%! (0.1635s)                                       [PathTracer] Rendering... 100%! (21.9912s)                              
+[PathTracer] BVH traced 415430 rays.                                            [PathTracer] BVH traced 477573 rays.                                    
+[PathTracer] Average speed 2.5407 million rays per second.                      [PathTracer] Average speed 0.0217 million rays per second.              
+[PathTracer] Averaged 738.974202 intersection tests per ray.                    [PathTracer] Averaged 7.048304 intersection tests per ray.
+[PathTracer] Saving to file: teapot.png... Done!                                [PathTracer] Saving to file: teapot.png... Done!
+[PathTracer] Job completed.                                                     [PathTracer] Job completed.                                                      
+```
 
 ## Showcasing some speedily rendered complex models:
 
