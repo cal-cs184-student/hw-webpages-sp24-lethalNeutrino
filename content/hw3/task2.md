@@ -19,7 +19,27 @@ Before implementing rendering acceleration with a BVH, our pathtracer used a nai
 
 Below, we compare output times of rendering the (really cute) Cow with and without BVH acceleration:
 ```
-does lined code work
+    [PathTracer] Input scene file: ../dae/meshedit/cow.dae                      [PathTracer] Input scene file: ../dae/meshedit/cow.dae
+    [PathTracer] Rendering using 8 threads                                      [PathTracer] Rendering using 8 threads
+    [PathTracer] Collecting primitives... Done! (0.0006 sec)                    [PathTracer] Collecting primitives... Done! (0.0005 sec)
+    [PathTracer] Building BVH from 5856 primitives... Done! (0.0000 sec)        [PathTracer] Building BVH from 5856 primitives... Done! (0.0086 sec)
+    [PathTracer] Rendering... 100%! (21.9912s)                                  [PathTracer] Rendering... 100%! (0.1567s)
+    [PathTracer] BVH traced 477573 rays.                                        [PathTracer] BVH traced 299751 rays.
+    [PathTracer] Average speed 0.0217 million rays per second.                  [PathTracer] Average speed 1.9127 million rays per second.
+    [PathTracer] Averaged 805.142177 intersection tests per ray.                [PathTracer] Averaged 8.660702 intersection tests per ray.
+    [PathTracer] Saving to file: cow.png... Done!                               [PathTracer] Saving to file: cow.png... Done!
+    [PathTracer] Job completed.                                                 [PathTracer] Job completed.
 ```
 
+Notice how adding in the BVH reduced the render time from 21.9 seconds to 0.156 seconds — a dramatic speedup. (and really satisfying to run)
+
 ## Showcasing some speedily rendered complex models:
+
+<p style="text-align:center">
+	<img src="./max_planck.png" style="width:45%">
+	<img src="./beetle.png" style="width:45%">
+	<br>
+	The sphere scene generated with 2048 samples per pixel, with 64 samples per batch and a max tolerance of 0.05.
+</p>
+
+

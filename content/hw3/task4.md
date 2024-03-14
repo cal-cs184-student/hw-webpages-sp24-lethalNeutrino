@@ -49,7 +49,7 @@ Samples of global illumination. Note the color of the walls reflecting onto the 
 
 <p style="text-align:center">
 <img src="./bunny_direct_only.png" style="width:33%">
-<img src="./bunny_indirect_only.png" style="width:33%">
+<img src="./bunny_noAccum_2.png" style="width:33%">
 <br>
 The bunny with direct lighting only and indirect lighting only.
 </p>
@@ -70,7 +70,7 @@ Samples of accumulated bunny renders. Notice how each image is progressively bri
 <img src="./bunny_noAccum_1.png" style="width:15%">
 <img src="./bunny_noAccum_2.png" style="width:15%">
 <img src="./bunny_noAccum_3.png" style="width:15%">
-<img src="./bunny_noAccum_4.png" style="width:15%">
+<img src="./bunny_sample_rate_1024.png" style="width:15%">
 <img src="./bunny_noAccum_5.png" style="width:15%">
 <br>
 Samples of each light bounce in the bunny renders. Notice how each image is progressively darker and shows reflected details. 

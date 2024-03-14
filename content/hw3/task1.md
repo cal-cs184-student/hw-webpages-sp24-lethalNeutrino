@@ -66,6 +66,10 @@ Then, we compute $u$, which has to fall between $0$ and $1$.
 Finally, we compute $v$, and check that $v > 0$ and $u + v < 1$. 
 If all of these checks pass, then the barycentric coordinates of $O + tD$ fall inside the triangle, so we can compute the intersection point using them and populate the intersection struct accordingly, and report that we have found an intersection.
 
+## Computing sphere intersections
+
+We directly used the implementation given in lecture for this section. Once we have parametrized the ray and the sphere, we used the quadratic formula to solve for the intersection `t` values, and if these are between `min_t` and `max_t`, we update them, as well as cut the `max_t` of the ray so that we do not test intersection for anything behind the sphere.
+
 ### That's a lot of determinants, isn't it?
 So far, this algorithm appears quite inefficient: we compute four separate determinants of 3x3 matrices ($1$ for parallel check, $3+1$ for Cramer's rule, but the fourth one is the same matrix as the parallel check), which should be really slow.
 However, the determinants involve a lot of the same vectors, which actually allows us to save a LOT of operations.
