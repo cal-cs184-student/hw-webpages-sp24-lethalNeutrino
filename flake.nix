@@ -14,6 +14,7 @@
         buildInputs = with pkgs; [
 			zola
         ];
+		shellHook = "zola serve";
       };
     }
   );

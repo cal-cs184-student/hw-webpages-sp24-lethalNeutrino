@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-Allow: /
-Sitemap: https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/sitemap.xml

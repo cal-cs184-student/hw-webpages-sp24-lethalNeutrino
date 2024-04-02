@@ -1,7 +1,7 @@
 +++
 title = "Homework 3: Pathtracer"
 template = "page.html"
-date = 2024-04-12T15:00:00Z
+date = 2024-03-12T15:00:00Z
 [extra]
 summary = "Raytracing"
 mathjax = "tex-mml"
