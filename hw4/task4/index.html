@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en"  class="theme--light" >
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-57x57.png" />
+  <link rel="short icon" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+  <title> • Handling Self-Collisions</title>
+  
+  
+  
+</head>
+
+<body>
+  <div id="sidebar" class="animated fadeInDown">
+    <div class="logo-title">
+      <div class="title">
+        <img src=https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/mirror_cloth.png style="width:80%;" alt="logo" />
+        <h3><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/"></a></h3>
+        <div class="description">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+    <div class="footer">
+      
+      <span>Designed by </span><a href="https://www.caicai.me">CaiCai</a>
+      <div class="by_zola"><a href="https://www.getzola.org/" target="_blank">Proudly published with Zola!</a></div>
+      
+    </div>
+  </div>
+  <div id="main">
+    <div class="page-top animated fadeInDown">
+      <div class="nav">
+        
+        
+        
+        
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/">Home</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw1/">Homework 1</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw2/">Homework 2</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw3/">Homework 3</a></li>
+        <li><a class="current"  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw4/">Homework 4</a></li>
+      </div>
+      <div class="information">
+        <div class="back_btn">
+          <a onclick="window.history.go(-1)" ><i
+              class="fas fa-chevron-left"></i></a>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+    <div class="autopagerize_page_element">
+      <div class="content">
+        
+<article class="post animated fadeInDown">
+  <h1><a href="https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw4&#x2F;task4&#x2F;">Handling Self-Collisions</a></h1>
+  
+  <div class="post-content"><h2 id="overview">Overview</h2>
+<p>In this task, we prevented the cloth from intersecting itself.
+To do this, we check if two point masses ever get too close to each other (their distance is less than the thickness of the cloth), and if they are, force them apart.
+There was also some optimization necessary to prevent having to do $n^2$ collision checks per timestep, which is way too intensive for a real time simulation, but that's basically all there is to it!</p>
+<h2 id="what-it-looks-like">What it looks like</h2>
+<p>We have some sample images of self-collision.
+First, we have some images throughout different stages of the process with default parameters.
+As we move from left to right, more time has passed since the start of the simulation:</p>
+<p style="text-align:center">
+<img src="../selfCollision_early.png" style="width:25%">
+<img src="../selfCollision_middle.png" style="width:25%">
+<img src="../selfCollision_late.png" style="width:25%">
+<img src="../selfCollision_rest.png" style="width:25%">
+</p>
+In the early collision, we have ripples propagating back up through the cloth.
+We can also see the cloth beginning to fold over itself.
+In the next image, we can see the cloth draping over itself many times and even some larger disturbances in the surface that hasn't yet collided with itself.
+Next, the cloth is almost completely folded over itself.
+We can see that the bottom part has not fully come to rest, either; it's flattening out as more of the cloth piles on top of it. 
+(This behavior is a little unnatural; you would expect this to happen a little bit, but friction should prevent major shifts in the cloth's movement. However, we didn't implement any friction, so the cloth flattens out much more than would happen in the real world.)
+Finally, the cloth flattens out almost completely, spreading out significantly and coming (almost) fully to rest.
+<h2 id="tweaking-some-parameters">Tweaking some parameters</h2>
+<p>Changing things like the density/spring constant affects how the cloth folds in on itself.
+From our experiments in task 2, we know that increasing(/decreasing) density has essentially the same effect as decreasing(/increasing) the spring constant, so we only show two tweaks: increasing the spring constant and increasing the density.
+The first image has an increased spring constant, making the cloth more stiff:</p>
+<p style="text-align:center">
+<img src="../selfCollision_highk.png" style="width:80%">
+</p>
+We can see the cloth doesn't fold in on itself nearly as much; there are fewer, wider folds.
+Also, the ripples from the self collision propagate up the cloth less when compared to the default settings.
+This next image has an increased density, which makes the cloth less stiff:
+<p style="text-align:center">
+<img src="../selfCollision_highd.png" style="width:80%">
+</p>
+The effect here is to increase the number of times the cloth folds in on itself.
+We can also see the surface of the cloth is much more disturbed above the parts that have already self-collided.
+It looks like having a relatively stronger corrective force makes the cloth less likely to fold over itself, and the opposing effect for a weaker corrective force. 
+</div>
+  <div class="post-footer">
+    <div class="meta">
+      <div class="info">
+        
+        
+      </div>
+    </div>
+  </div>
+</article>
+<div class="share">
+  <div class="weibo">
+    <a class="fab fa-weibo"
+      href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&title=',e(d.title),'&appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a>
+  </div>
+  <div class="twitter">
+    <a class="fab fa-twitter"
+      href="http://twitter.com/share?text=Handling Self-Collisions&url=https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw4&#x2F;task4&#x2F;"></a>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$'], ["\\[", "\\]"]],
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+
+
+
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function showLanguages() {
+      let currentDisplay = document.getElementById("languages").style.display;
+      if (currentDisplay == 'none') {
+        document.getElementById("languages").style.display = 'block';
+      } else {
+        document.getElementById("languages").style.display = 'none';
+      }
+    }
+  </script>
+</body>
+
+</html>

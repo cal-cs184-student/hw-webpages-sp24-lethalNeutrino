@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en"  class="theme--light" >
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-57x57.png" />
+  <link rel="short icon" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+  <title> • Global Lighting</title>
+  
+  
+  
+</head>
+
+<body>
+  <div id="sidebar" class="animated fadeInDown">
+    <div class="logo-title">
+      <div class="title">
+        <img src=https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/mirror_cloth.png style="width:80%;" alt="logo" />
+        <h3><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/"></a></h3>
+        <div class="description">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+    <div class="footer">
+      
+      <span>Designed by </span><a href="https://www.caicai.me">CaiCai</a>
+      <div class="by_zola"><a href="https://www.getzola.org/" target="_blank">Proudly published with Zola!</a></div>
+      
+    </div>
+  </div>
+  <div id="main">
+    <div class="page-top animated fadeInDown">
+      <div class="nav">
+        
+        
+        
+        
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/">Home</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw1/">Homework 1</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw2/">Homework 2</a></li>
+        <li><a class="current"  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw3/">Homework 3</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw4/">Homework 4</a></li>
+      </div>
+      <div class="information">
+        <div class="back_btn">
+          <a onclick="window.history.go(-1)" ><i
+              class="fas fa-chevron-left"></i></a>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+    <div class="autopagerize_page_element">
+      <div class="content">
+        
+<article class="post animated fadeInDown">
+  <h1><a href="https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task4&#x2F;">Global Lighting</a></h1>
+  
+  <div class="post-content"><h1 id="an-overview-of-indirect-lighting">An overview of indirect lighting</h1>
+<p>In the real world, light doesn't have to go directly to your eyes or directly to an object then to your eyes, as our <a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw3/task4/%7B%7Bsite.baseurl%7D%7D/pathtracer/task3">Task 3</a> implementation would have you believe. 
+Instead, it bounces around all over the place and some of it happens to end up in your eyes.
+Simulating all the light bouncing around in the scene is computationally infeasible, to say the least.
+Instead, we can go in the reverse direction: send rays out of the camera, like we've been doing, and have them bounce around in various crazy ways.
+At each bounce point, we can use our direct lighting calculation (<code>one_bounce_illumination()</code> in the code) from before to estimate how much light is coming into that point and out towards our ray, and accumulate that with the light we expect to come in from the other bounces. See the issue? To compute the indirect lighting at one point, we'll have to compute the direct lighting at that point and the indirect lighting at another point; it's an infinite loop where we need to compute indirect lighting before being able to compute it. In order to resolve this, we can limit our indirect lighting to some number of bounces $n$, and once we reach $n-1$ bounces, just return the <code>one_bounce_illumination()</code> as computed in <a href=".../hw3/task3">Task 3</a> to avoid infinite loops.</p>
+<p>So now it'll actually render in a finite amount of time, but there's a slight issue with our &quot;maximum bounces&quot; strategy.
+It's what's called a biased estimator: since we never get any contribution from light that bounces more than $n$ times, and the full contribution from all the bounces $\le n$, we're producing a bias towards smaller bounces of light which can eliminate softer detail.
+To avoid this, we implemented what's called (rather grimly) the Russian Roulette sampling strategy.
+Here, at every indirect bounce (after the first one), we have a <em>continuation probability</em> $c$ (set to something between $0.3$ and $0.4$), which is the probability that this bounce gets to keep accumulating light rather than just returning the light at this bounce immediately.
+Because we're effectively changing our sampling probabilities, we also have to normalize (divide) our incoming light by this new constant $c$ every time the Russian Roulette has a chance to stop the recursion, but doesn't, but now we have an unbiased estimator of indirect lighting and that's good enough for us to get a high quality render of the scene.</p>
+<h1 id="how-do-we-actually-compute-it">How do we actually compute it?</h1>
+<p>It's pretty much exactly as described above, but with a few more details.
+In the code, the function <code>at_least_one_bounce_illumination(Ray r, Intersection isect)</code> handles direct lighting from objects (not light source -&gt; camera with no bounces, though) as well as all of indirect lighting.
+So, when this function is first called to estimate the light coming into the camera, the ray has a <code>depth</code> field of 0.
+Whenever we handle bouncing a ray, we'll increment this <code>depth</code> in the ray we create, and continually check it against the <code>max_ray_depth</code> set by the viewer (if this is set to 0, we'll just return a 0 vector immediately so as not to process any bounces).
+If the ray's <code>depth</code> reaches <code>max_ray_depth - 1</code>, we'll immediately return <code>one_bounce_illumination(Ray r, Intersection isect)</code> to handle the direct bounce of light in that direction for accumulation.
+Otherwise, we can start handling the indirect bounces.
+Essentially, what we want to do is compute the <code>max_ray_depth - depth</code> bounce lighting at this point along this given ray.
+Intuitively, what this should be is the <code>one_bounce_illumination()</code> at this point (light coming directly from light sources and bouncing off along the input ray<sup class="footnote-reference"><a href="#1">1</a></sup>), plus the illumination accumulated along all of the other <code>max_ray_depth - depth - 1</code> bounces before this one (yes, before, because we're moving in the opposite direction that light travels).
+This is assuming that we actually allow our light ray to continue bouncing: with the Russian Roulette sampling approach, we only continue with probability $c$ and stop iterating over the bounces with probability $1-c$, in which case we would just return the <code>one_bounce_illumination()</code>.</p>
+<p>How do we compute &quot;everything else?&quot;
+Well, the light coming <em>in</em> from all the other bounces is equal to the light coming <em>out</em> from the bounce right before this one.
+Using our bounce cutoff logic, that's exactly the <code>at_least_one_bounce_illumination()</code> computed at a ray of <code>depth + 1</code> leaving from wherever it bounced from to land here!
+What we should do, then, is sample a random bounce direction from our current location, and follow it along to wherever it ends up.
+Then, we can recursively call <code>at_least_one_bounce_illumination()</code> at that point with a depth of <code>depth + 1</code> compared to this point, and it will handle all the logic of computing the accumulated illumination for us!
+Now, all we have to do is the same logic we did before for sampling with the Monte Carlo estimator: we multiply this incoming light received from the prior bounce point by the material's reflectance property with respect to the inward and outward angles, and by the cosine of the angle of the inward ray to the normal. 
+We also have to normalize by the probability density of sampling that ray, as well as the continuation probability <em>c</em> to account for the chance that we never got to this step.
+The total light then is just the sum of the <code>one_bounce_illumination()</code> at this point and the appropriately scale <code>at_least_one_bounce_illumination()</code> at the new point.
+Then, we can just return that total light bounce (or, if we're only computing $n$th bounce without accumulation, we return only the <code>at_least_one_bounce_illumination()</code>, and the Russian Roulette sampling doesn't apply). </p>
+<h1 id="images">Images</h1>
+<p style="text-align:center">
+<img src="../spheres_demo.png" style="width:33%">
+<img src="../bunny_accum_5.png" style="width:33%">
+<br>
+Samples of global illumination. Note the color of the walls reflecting onto the models in the center.
+</p>
+<p style="text-align:center">
+<img src="../bunny_direct_only.png" style="width:33%">
+<img src="../bunny_indirect_only.png" style="width:33%">
+<br>
+The bunny with direct lighting only and indirect lighting only.
+</p>
+<p style="text-align:center">
+<img src="../bunny_accum_0.png" style="width:15%">
+<img src="../bunny_accum_1.png" style="width:15%">
+<img src="../bunny_accum_2.png" style="width:15%">
+<img src="../bunny_accum_3.png" style="width:15%">
+<img src="../bunny_accum_4.png" style="width:15%">
+<img src="../bunny_accum_5.png" style="width:15%">
+<br>
+Samples of accumulated bunny renders. Notice how each image is progressively brighter and shows more reflected detail.
+</p>
+<p style="text-align:center">
+<img src="../bunny_noAccum_0.png" style="width:15%">
+<img src="../bunny_noAccum_1.png" style="width:15%">
+<img src="../bunny_noAccum_2.png" style="width:15%">
+<img src="../bunny_noAccum_3.png" style="width:15%">
+<img src="../bunny_sample_rate_1024.png" style="width:15%">
+<img src="../bunny_noAccum_5.png" style="width:15%">
+<br>
+Samples of each light bounce in the bunny renders. Notice how each image is progressively darker and shows reflected details. 
+</p>
+<p style="text-align:center">
+<img src="../bunny_rr_0.png" style="width:13%">
+<img src="../bunny_rr_1.png" style="width:13%">
+<img src="../bunny_rr_2.png" style="width:13%">
+<img src="../bunny_rr_3.png" style="width:13%">
+<img src="../bunny_rr_4.png" style="width:13%">
+<img src="../bunny_rr_5.png" style="width:13%">
+<img src="../bunny_rr_100.png" style="width:13%">
+<br>
+Samples of russian roulette rendering at the given depths: 0, 1, 2, 3, 4, 5, and 100.
+</p>
+<p style="text-align:center">
+<img src="../bunny_sample_rate_1.png" style="width:13%">
+<img src="../bunny_sample_rate_2.png" style="width:13%">
+<img src="../bunny_sample_rate_4.png" style="width:13%">
+<img src="../bunny_sample_rate_8.png" style="width:13%">
+<img src="../bunny_sample_rate_16.png" style="width:13%">
+<img src="../bunny_sample_rate_64.png" style="width:13%">
+<img src="../bunny_accum_5.png" style="width:13%">
+<br>
+Samples of the bunny rendered at the given sample rates: 1, 2, 4, 8, 16, 64 and 1024. Notice how the noise gets reduced as the sample rate increases.
+</p>
+<h2 id="footnotes">Footnotes</h2>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>To be precise, the ray is actually pointing in the opposite direction of the direction the light is bouncing, which is something we have to account for in the implementation, but is not that important conceptually. </p>
+</div>
+</div>
+  <div class="post-footer">
+    <div class="meta">
+      <div class="info">
+        
+        
+      </div>
+    </div>
+  </div>
+</article>
+<div class="share">
+  <div class="weibo">
+    <a class="fab fa-weibo"
+      href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&title=',e(d.title),'&appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a>
+  </div>
+  <div class="twitter">
+    <a class="fab fa-twitter"
+      href="http://twitter.com/share?text=Global Lighting&url=https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task4&#x2F;"></a>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$'], ["\\[", "\\]"]],
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+
+
+
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function showLanguages() {
+      let currentDisplay = document.getElementById("languages").style.display;
+      if (currentDisplay == 'none') {
+        document.getElementById("languages").style.display = 'block';
+      } else {
+        document.getElementById("languages").style.display = 'none';
+      }
+    }
+  </script>
+</body>
+
+</html>

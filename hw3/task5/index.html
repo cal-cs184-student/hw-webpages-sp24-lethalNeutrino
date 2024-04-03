@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"  class="theme--light" >
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-57x57.png" />
+  <link rel="short icon" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+  <title> • Adaptive Sampling</title>
+  
+  
+  
+</head>
+
+<body>
+  <div id="sidebar" class="animated fadeInDown">
+    <div class="logo-title">
+      <div class="title">
+        <img src=https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/mirror_cloth.png style="width:80%;" alt="logo" />
+        <h3><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/"></a></h3>
+        <div class="description">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+    <div class="footer">
+      
+      <span>Designed by </span><a href="https://www.caicai.me">CaiCai</a>
+      <div class="by_zola"><a href="https://www.getzola.org/" target="_blank">Proudly published with Zola!</a></div>
+      
+    </div>
+  </div>
+  <div id="main">
+    <div class="page-top animated fadeInDown">
+      <div class="nav">
+        
+        
+        
+        
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/">Home</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw1/">Homework 1</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw2/">Homework 2</a></li>
+        <li><a class="current"  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw3/">Homework 3</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw4/">Homework 4</a></li>
+      </div>
+      <div class="information">
+        <div class="back_btn">
+          <a onclick="window.history.go(-1)" ><i
+              class="fas fa-chevron-left"></i></a>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+    <div class="autopagerize_page_element">
+      <div class="content">
+        
+<article class="post animated fadeInDown">
+  <h1><a href="https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task5&#x2F;">Adaptive Sampling</a></h1>
+  
+  <div class="post-content"><h2 id="speeding-up-rendering-again">Speeding up Rendering Again</h2>
+<p>Before this, we implemented each pixel with the same amount of samples per pixel. But not all pixels are equally hard to render. For example, a pixel that is showing a wall would likely be roughly the same color, regardless of where in the pixel a ray is drawn. Compare this to a high frequency part of the bunny, like the stomach, or exactly on the corner of a wall. In these places, it is possible that a small subpixel deviation will cause a large change in the color. To measure this more concretely, we use the statistical method suggested by the homework spec. We use the mean and standard variation of the samples drawn so far to compute a confidence iterval. Once we are 95% confident in this interval, we stop sending out new rays. To calculate mean and SD, we keep two running tallies:
+$$
+s_1 = \sum_{i=1}^{n} x_i \qquad
+s_2 = \sum_{i=1}^{n} x_i^2
+$$</p>
+<p>Then, we calculate mean and variance:</p>
+<p>$$
+\mu = \frac{s_n}{n} \qquad \sigma^2 = \left(\frac{1}{n-1}\right) \cdot \left(s_2 - \frac{s_1^2}{n}\right)
+$$</p>
+<p>From here, we calculate our confidence interval as </p>
+<p>$$ I = 1.96 \cdot \frac{\sigma}{\sqrt{n}} $$</p>
+<p>If this is less than $\text{maxTolerance} \cdot \mu$, then we terminate the rendering of this pixel and use what we have sampled so far. Since computing these statistics is quite compiutationally intensive, we compute these statistics once every <code>samplesPerBatch</code> samples. For example, for the below renders, we ran 2048 samples per pixel, and computed the statistics once every 64 samples.</p>
+<h2 id="examples">Examples</h2>
+<p style="text-align:center">
+	<img src="../spheres_demo.png" style="width:45%">
+	<img src="../spheres_rate.png" style="width:45%">
+	<br>
+	The sphere scene generated with 2048 samples per pixel, with 64 samples per batch and a max tolerance of 0.05.
+</p>
+<p style="text-align:center">
+	<img src="../bunny_adaptive.png" style="width:45%">
+	<img src="../bunny_adaptive_rate.png" style="width:45%">
+	<br>
+	The sphere scene generated with 2048 samples per pixel, with 64 samples per batch and a max tolerance of 0.05.
+</p>
+</div>
+  <div class="post-footer">
+    <div class="meta">
+      <div class="info">
+        
+        <i class="far fa-sun"></i><span class="date">2024-02-28</span>
+        
+        
+      </div>
+    </div>
+  </div>
+</article>
+<div class="share">
+  <div class="weibo">
+    <a class="fab fa-weibo"
+      href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&title=',e(d.title),'&appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a>
+  </div>
+  <div class="twitter">
+    <a class="fab fa-twitter"
+      href="http://twitter.com/share?text=Adaptive Sampling&url=https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task5&#x2F;"></a>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$'], ["\\[", "\\]"]],
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+
+
+
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function showLanguages() {
+      let currentDisplay = document.getElementById("languages").style.display;
+      if (currentDisplay == 'none') {
+        document.getElementById("languages").style.display = 'block';
+      } else {
+        document.getElementById("languages").style.display = 'none';
+      }
+    }
+  </script>
+</body>
+
+</html>

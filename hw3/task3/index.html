@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en"  class="theme--light" >
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-57x57.png" />
+  <link rel="short icon" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+  <title> • Direct Lighting</title>
+  
+  
+  
+</head>
+
+<body>
+  <div id="sidebar" class="animated fadeInDown">
+    <div class="logo-title">
+      <div class="title">
+        <img src=https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/mirror_cloth.png style="width:80%;" alt="logo" />
+        <h3><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/"></a></h3>
+        <div class="description">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+    <div class="footer">
+      
+      <span>Designed by </span><a href="https://www.caicai.me">CaiCai</a>
+      <div class="by_zola"><a href="https://www.getzola.org/" target="_blank">Proudly published with Zola!</a></div>
+      
+    </div>
+  </div>
+  <div id="main">
+    <div class="page-top animated fadeInDown">
+      <div class="nav">
+        
+        
+        
+        
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/">Home</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw1/">Homework 1</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw2/">Homework 2</a></li>
+        <li><a class="current"  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw3/">Homework 3</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw4/">Homework 4</a></li>
+      </div>
+      <div class="information">
+        <div class="back_btn">
+          <a onclick="window.history.go(-1)" ><i
+              class="fas fa-chevron-left"></i></a>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+    <div class="autopagerize_page_element">
+      <div class="content">
+        
+<article class="post animated fadeInDown">
+  <h1><a href="https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task3&#x2F;">Direct Lighting</a></h1>
+  
+  <div class="post-content"><p><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw3/task3/%7B%7Bsite.baseurl%7D%7D/pathtracer">Back to main page</a></p>
+<h1 id="a-conceptual-overview-of-ray-tracing">A conceptual overview of ray tracing</h1>
+<p>In this task, we rendered scenes with <em>direct lighting</em>.
+Direct lighting is either light rays traveling directly into the camera (zero-bounce lighting), or light rays hitting an object and then bouncing off directly into the camera (one-bounce lighting).
+This is enough to capture shadows and a large part of the actual lighting in the scene, but doesn't represent the full story where light bounces off of objects multiple times before reaching our eyes/a camera's lens, which will be implemented in <a href=".../hw3/task4">Task 4</a>.</p>
+<p>Ray tracing is usually done backwards, when compared to how light actually moves in the real world.
+Like described in <a href=".../hw3/task1">Task 1</a>, we generate rays coming <em>out</em> of the camera into the scene (through a specific pixel we're sampling), and then see if we intersect an object in the scene.
+If we do, we can receive light in two different ways:</p>
+<ol>
+<li>The ray is intersecting a light source. In this case, we can call a function <code>get_emission()</code> to figure out how much light would be coming in from that direction, and add that to the total light sampled.</li>
+<li>Light is reaching the object at the point the ray intersected it, and bouncing off along the ray towards the camera. Explictly calculating how much light comes into the camera in this way is quite hard, but there are a couple of strategies for estimating it using Monte Carlo estimators.</li>
+</ol>
+<h2 id="the-monte-carlo-estimator-for-the-reflection-equation">The Monte Carlo estimator for the reflection equation</h2>
+<p>Like we said before, calculating the actual light received from every possible direction is very difficult, and extremely computationally expensive.
+It involves computing an integral over the entire hemisphere of vectors coming out of the point of reflection which depends heavily on the exact position of every object in the scene: completely impractical to do for every single ray we cast.
+So, instead, we could try sampling several vectors $\omega_j$ from this hemisphere and average their contribution to the light together to estimate what the total light reflected should be.
+The exact amount of light contributed depends on three factors.
+The first factor is how much light is actually coming in from that direction and hitting our point, which we'll write as the <em>incoming light</em> $L_i(\mathrm{p}, \omega_j)$, where $\mathrm{p}$ is the point where the light is hitting and $\omega_j$ is the direction the light is coming from.
+Then, we have to multiply by the <em>reflectance</em> of the object we're bouncing off of, which is determined by the object itself, and both the incoming ray $\omega_j$ and the outgoing ray $\omega_r$. We'll call this reflectance $f_r(\mathrm{p}, \omega_j \rightarrow \omega_r)$.
+Finally, we have to take into account some trigonometry: if you consider a thin beam of light coming in perfectly normal to the surface, it will cover exactly the same area as its width. However, if the light comes in at an angle almost parallel to the surface, its light will be spread out a lot more across the whole surface.
+Therefore, we have to scale light coming in from an angle away from the normal appropriately, and the appropriate factor turns out to be $\cos \theta_j$, where $\theta_j$ is the angle of $\omega_j$ with the normal vector to the surface at $\mathrm{p}$.</p>
+<p>So, we've got our method for estimating the one-bounce radiance, right?
+Well, almost.
+We actually have to normalize their contribution by the probability (technically, the probability density, since the probability is always $0$ of selecting a given point out of a continuum) of sampling the point that we sampled (which changes based on how exactly we sample our points), as otherwise directions with light sources that are less likely to be chosen are less likely to contribute their light values and we could end up with a skewed result.
+So, with that last addition, we put everything together to get this equation:</p>
+<p>$$\frac{1}{N} \sum_{j=1}^N \frac{f_r(\mathrm{p}, \omega_j \rightarrow \omega_r) L_i(\mathrm{p}, \omega_j) \cos \theta_j}{p(\omega_j)}$$</p>
+<p>where $N$ is the number of times we sample per ray.</p>
+<p>Now, the only thing left to do is to pick our sampling strategy over this hemisphere of possibilities!</p>
+<h1 id="direct-lighting-by-hemisphere-sampling">Direct lighting by hemisphere sampling</h1>
+<p>The naive strategy is to randomly sample in all possible reflection directions (essentially, the unit hemisphere of points where the dot product of the normal vector to the surface we intersect with the vector pointing towards the point is greater than $0$). 
+Then, if a sampled ray intersects a light source, we can use the Monte Carlo estimator to tell us how much light to add to the total light coming out of that point, and add it to our total light coming in. 
+If we hit something else, since we're not considering multi-bounce radiance, we just say that we receive no light from that direction and move on to the next sample. 
+We sample $N$ times for every ray, so once we finish sampling we divide our total light by $N$ and return it. Pretty straightforward, no?</p>
+<p>Unfortunately, this naive strategy runs into some issues.
+Usually, scenes don't have that many lights in them, so most samples aren't really telling us much besides &quot;there's no light this way,&quot; which is kind of a waste of computation and results in our sample rate being effectively much lower than it actually is.
+This lowered &quot;effective sampling rate&quot; causes rendered images to be very noisy unless we do a LOT of samples per pixel, which is computationally expensive.</p>
+<h1 id="direct-lighting-by-importance-sampling-on-lights">Direct lighting by importance sampling on lights</h1>
+<p>So, instead, we can improve our sampling strategy by only sampling directions where it's even possible for light to come in.
+How? Instead of sampling random points on a sphere, we can iterate over each light and sample directions only from points on the light itself.
+This way, it's much more likely the ray will actually intersect the light source: we don't have any rays that miss the scene entirely, for example, and the only way a ray wouldn't intersect the light source is if we intersect something else first. 
+However, we do now have two different cases to handle: point lights and area lights.
+When doing uniform hemisphere sampling, we have a probability of $0$ of hitting a point light, so they never contributed any illumination to the scene.
+But for light sampling, we need to actually compute their contribution to the radiance at a point.
+For a point light, there's no point (<del>well there is a point light but you know what I mean</del>) in sampling multiple times; we get the same ray every single time, so we might as well just sample once and see if the light ray makes it to the point of intersection or not. This saves us some computational time compared to hemisphere sampling (assuming that hemisphere sampling samples the same number of times per light per pixel), with no cost in quality.
+For an area light, on the other hand, we sample uniformly from the surface of the light, and normalize by a custom probability density function provided by the light itself when adding to our average.</p>
+<h1 id="comparison-of-generated-images">Comparison of generated images</h1>
+<p>These images were generated with 16 samples per pixel, and 8 samples per light, at a 480x360 pixel resolution.
+The left image is with uniform hemisphere sampling, and the right is with importance sampling.</p>
+<p style = "text-align:center">
+	<img src="../task3-spheres-h.png" alt="spheres in a room with hemisphere sampling" width="45%" style="text-align:center"/>
+	<img src="../task3-spheres.png" alt="spheres in a room with importance sampling by lights" width="45%" style="text-align:center"/>
+</p>
+<p style = "text-align:center">
+	<img src="../task3-bunny-h.png" alt="bunny in a room with hemisphere sampling" width="45%" style="text-align:center"/>
+	<img src="../task3-bunny.png" alt="bunny in a room with importance sampling by lights" width="45%" style="text-align:center"/>
+</p>
+<p>We can see that images generated by hemisphere sampling generally have a lot of noise all over the picture, which comes from most of the samples not reaching a light source and being basically completely uninformative.
+On the other hand, importance sampling renders are much smoother and nicer.</p>
+<p style = "text-align:center">
+	<img src="../task3-dragon-h.png" alt="dragon with hemisphere sampling" width="45%" style="text-align:center"/>
+	<img src="../task3-dragon.png" alt="dragon with importance sampling by lights" width="45%" style="text-align:center"/>
+</p>
+<p>The dragon scene only has one point light, so uniform hemisphere sampling never finds it and so the whole scene is dark in the render.
+Comparatively, sampling by importance sampling on lights allows the light to actually illuminate the scene and render an image of the dragon. 
+Unless you like black, it's pretty clear importance sampling wins here.</p>
+<h1 id="reduction-in-noise-in-soft-shadows">Reduction in noise in soft shadows</h1>
+<p>When we sample by importance sampling, sometimes only one sample is necessary to find out what the light level is at a given pixel.
+For a specific pixel, if a ray is guaranteed to make it from ANY point on the light source from any point that a camera ray within the pixel intersects, then no matter how many samples you take, the color of the pixel will be the same (for that specific pixel sample, at least).
+Similarly, if the ray is guaranteed NOT to make it to the light source, sampling more is equally useless.
+(We will take advantage of this in <a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw3/task3/%7B%7Bsite.baseurl%7D%7D/pathtracer/task5">Task 5</a> using adaptive sampling to reduce sampling in regions that don't need it as much.)
+So, the only case where additional samples are important is where some of the rays can make it back to the light source from the camera ray intersection point, but others can't.
+This happens at the edges of shadows; when the sample rate per light is low, we can have shadow edges that look very noisy and harsh, but increasing the sample rate per light will soften those shadows and remove the noise.
+Here's an example, showing the bunny from earlier.
+We have 1 sample per pixel for all images, and a resolution of 480x360, but the sample rate per light ranges over 1,4,16,64 as we go left to right and top to bottom:</p>
+<p style = "text-align:center">
+	<img src="../task3-bunny-comp-L1.png" alt="bunny with 1 sample per light" width="45%" style="text-align:center"/>
+	<img src="../task3-bunny-comp-L4.png" alt="bunny with 4 samples per light" width="45%" style="text-align:center"/>
+</p>
+In these first two images, the shadows on the ground are extremely noisy. However, in the first image, the shadows on the ears and eye... sockets... are also quite noisy, whereas 4 samples helped smooth out those shadows substantially.
+<p style = "text-align:center">
+	<img src="../task3-bunny-comp-L16.png" alt="bunny with 16 sample per light" width="45%" style="text-align:center"/>
+	<img src="../task3-bunny-comp-L64.png" alt="bunny with 64 samples per light" width="45%" style="text-align:center"/>
+</p>
+<p>At 16 samples per light, the noise in the ground shadow has been mostly smoothed out, although there are still a decent number of gray specks in there, and the inner shadow is still a little harsh. The ears and eyes have smoothed out completely, though.
+Once we've gotten to 64 samples per light, the gray specks have faded a little more, and the inner shadow has a nice gradient and softness to it. There is still some noise, though; this could probably be improved by taking more samples per pixel, since the complex geometry of the ears and head may be leading to large changes in how much light gets through to specific points.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Importance sampling generally reduces noise substantially in the rendered image, by virtue of only sampling points that actually matter to the lighting.
+This in essence gives a lot more information to the pixel about what color it should be, and prevents the noise that is generated by high variance due to effectively low sample rates.
+Recreating the same quality of image that importance sampling can create with hemisphere sampling would require a much higher sampling rate, which generally would require a lot more computation.
+Hemisphere sampling is much easier to implement, though, since it doesn't require giving each light its own unique sampling function and in general there's a lot less cases to handle. 
+So, if you have the time, importance sampling is basically a direct upgrade to hemisphere sampling, but it's a lot more work to implement.</p>
+</div>
+  <div class="post-footer">
+    <div class="meta">
+      <div class="info">
+        
+        
+      </div>
+    </div>
+  </div>
+</article>
+<div class="share">
+  <div class="weibo">
+    <a class="fab fa-weibo"
+      href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&title=',e(d.title),'&appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a>
+  </div>
+  <div class="twitter">
+    <a class="fab fa-twitter"
+      href="http://twitter.com/share?text=Direct Lighting&url=https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task3&#x2F;"></a>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$'], ["\\[", "\\]"]],
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+
+
+
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function showLanguages() {
+      let currentDisplay = document.getElementById("languages").style.display;
+      if (currentDisplay == 'none') {
+        document.getElementById("languages").style.display = 'block';
+      } else {
+        document.getElementById("languages").style.display = 'none';
+      }
+    }
+  </script>
+</body>
+
+</html>

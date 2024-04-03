@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en"  class="theme--light" >
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/apple-touch-icon-57x57.png" />
+  <link rel="short icon" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/favicon.png" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+  <title> • Bounding Volume Hierarchy</title>
+  
+  
+  
+</head>
+
+<body>
+  <div id="sidebar" class="animated fadeInDown">
+    <div class="logo-title">
+      <div class="title">
+        <img src=https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/images/mirror_cloth.png style="width:80%;" alt="logo" />
+        <h3><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/"></a></h3>
+        <div class="description">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <ul class="social-links">
+      
+    </ul>
+    <div class="footer">
+      
+      <span>Designed by </span><a href="https://www.caicai.me">CaiCai</a>
+      <div class="by_zola"><a href="https://www.getzola.org/" target="_blank">Proudly published with Zola!</a></div>
+      
+    </div>
+  </div>
+  <div id="main">
+    <div class="page-top animated fadeInDown">
+      <div class="nav">
+        
+        
+        
+        
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/">Home</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw1/">Homework 1</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw2/">Homework 2</a></li>
+        <li><a class="current"  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw3/">Homework 3</a></li>
+        <li><a  href="https://cal-cs184-student.github.io/hw-webpages-sp24-lethalNeutrino/hw4/">Homework 4</a></li>
+      </div>
+      <div class="information">
+        <div class="back_btn">
+          <a onclick="window.history.go(-1)" ><i
+              class="fas fa-chevron-left"></i></a>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+    <div class="autopagerize_page_element">
+      <div class="content">
+        
+<article class="post animated fadeInDown">
+  <h1><a href="https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task2&#x2F;">Bounding Volume Hierarchy</a></h1>
+  
+  <div class="post-content"><h2 id="making-our-renderer-go-brrrrr">Making our renderer go brrrrr</h2>
+<p>Before implementing rendering acceleration with a BVH, our pathtracer used a naive algorithm wherein every ray would be checked against every <code>Primitive</code> in the scene, leading to a very slow $O(nm)$ runtime with $n$ primitives and $m$ rays. To speed this up, we used a BVH constructed with the median heuristic. We sorted the list of <code>Primitive</code>s based on the longest axis of the bounding box, and then used the median as the split point. Another heuristic we implemented was the midpoint heuristic, but both produced approximately equal results from our testing, so we kept the simplicity of the median approach to avoid the edge case of creating an empty node. To construct a BVH, we performed the following algorithm:</p>
+<ol>
+<li>Generate a <code>BVHNode</code> containing all of the primitives.</li>
+<li>If the list of <code>Primitive</code>s passed is has less elements than <code>max_leaf_size</code>, return a <code>BVHNode</code> containing all of the <code>Primitive</code>s.</li>
+<li>Otherwise, compute the size of the bounding box of the <code>BVHNode</code>, and choose the maximal axis.</li>
+<li>Sort the list of <code>Primitive</code>s based on their position in the maximal axis, and split into two equal lists.</li>
+<li>Set the <code>l</code>(eft) member of the <code>BVHNode</code> to a <code>BVHNode</code> constructed from the first half of the list, and the <code>r</code>(ight) member to be a <code>BVHNode</code> constructed from the second half of the list.</li>
+</ol>
+<h2 id="comparing-rendering-times">Comparing Rendering Times</h2>
+<p>Below, we compare output times of rendering the (really cute) Cow with and without BVH acceleration:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>    [PathTracer] Input scene file: .../dae/meshedit/cow.dae                      [PathTracer] Input scene file: .../dae/meshedit/cow.dae
+</span><span>    [PathTracer] Rendering using 8 threads                                      [PathTracer] Rendering using 8 threads
+</span><span>    [PathTracer] Collecting primitives... Done! (0.0006 sec)                    [PathTracer] Collecting primitives... Done! (0.0005 sec)
+</span><span>    [PathTracer] Building BVH from 5856 primitives... Done! (0.0000 sec)        [PathTracer] Building BVH from 5856 primitives... Done! (0.0086 sec)
+</span><span>    [PathTracer] Rendering... 100%! (21.9912s)                                  [PathTracer] Rendering... 100%! (0.1567s)
+</span><span>    [PathTracer] BVH traced 477573 rays.                                        [PathTracer] BVH traced 299751 rays.
+</span><span>    [PathTracer] Average speed 0.0217 million rays per second.                  [PathTracer] Average speed 1.9127 million rays per second.
+</span><span>    [PathTracer] Averaged 805.142177 intersection tests per ray.                [PathTracer] Averaged 8.660702 intersection tests per ray.
+</span><span>    [PathTracer] Saving to file: cow.png... Done!                               [PathTracer] Saving to file: cow.png... Done!
+</span><span>    [PathTracer] Job completed.                                                 [PathTracer] Job completed.
+</span></code></pre>
+<p>Notice how adding in the BVH reduced the render time from 21.9 seconds to 0.156 seconds — a dramatic speedup. (and really satisfying to run) Below is another example, using the teapot:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>[PathTracer] Input scene file: .../dae/meshedit/cow.dae                          [PathTracer] Input scene file: .../dae/meshedit/teapot.dae
+</span><span>[PathTracer] Rendering using 8 threads                                          [PathTracer] Rendering using 8 threads                                  
+</span><span>[PathTracer] Collecting primitives... Done! (0.0006 sec)                        [PathTracer] Collecting primitives... Done! (0.0004 sec)                
+</span><span>[PathTracer] Building BVH from 2464 primitives... Done! (0.0000 sec)            [PathTracer] Building BVH from 5856 primitives... Done! (0.0030 sec)    
+</span><span>[PathTracer] Rendering... 100%! (21.9912s)                                      [PathTracer] Rendering... 100%! (0.1635s) 
+</span><span>[PathTracer] BVH traced 477573 rays.                                            [PathTracer] BVH traced 415430 rays.                                    
+</span><span>[PathTracer] Average speed 0.0217 million rays per second.                      [PathTracer] Average speed 2.5407 million rays per second.              
+</span><span>[PathTracer] Averaged 7.048304 intersection tests per ray.                      [PathTracer] Averaged 738.974202 intersection tests per ray.
+</span><span>[PathTracer] Saving to file: teapot.png... Done!                                [PathTracer] Saving to file: teapot.png... Done!
+</span><span>[PathTracer] Job completed.                                                     [PathTracer] Job completed.                                                      
+</span></code></pre>
+<p>In general, we found that the speedup is several orders of magnitude, likely due to the asymptotic speedup from $O(n)$ to $O(\log n)$ per ray. Additionally, this can be directly visualized by the average intersections per ray dropping to approximately 1% of the intersections computed per ray before implementing the BVH. Overall, we are very happy with the speedup presented by our implementation. More experimentation could be done on the various heuristics of generating BVHs to create a faster speedup.</p>
+<h2 id="showcasing-some-speedily-rendered-complex-models">Showcasing some speedily rendered complex models:</h2>
+<p style="text-align:center">
+	<img src="../max_planck.png" style="width:45%">
+	<img src="../beetle.png" style="width:45%">
+	<br>
+	Relatively complicated .dae files generated with our BVH acceleration.
+</p>
+</div>
+  <div class="post-footer">
+    <div class="meta">
+      <div class="info">
+        
+        
+      </div>
+    </div>
+  </div>
+</article>
+<div class="share">
+  <div class="weibo">
+    <a class="fab fa-weibo"
+      href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&title=',e(d.title),'&appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a>
+  </div>
+  <div class="twitter">
+    <a class="fab fa-twitter"
+      href="http://twitter.com/share?text=Bounding Volume Hierarchy&url=https:&#x2F;&#x2F;cal-cs184-student.github.io&#x2F;hw-webpages-sp24-lethalNeutrino&#x2F;hw3&#x2F;task2&#x2F;"></a>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['$$', '$$'], ["\\[", "\\]"]],
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+
+
+
+
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function showLanguages() {
+      let currentDisplay = document.getElementById("languages").style.display;
+      if (currentDisplay == 'none') {
+        document.getElementById("languages").style.display = 'block';
+      } else {
+        document.getElementById("languages").style.display = 'none';
+      }
+    }
+  </script>
+</body>
+
+</html>
