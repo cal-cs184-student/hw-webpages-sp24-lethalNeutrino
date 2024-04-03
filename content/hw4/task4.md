@@ -1,11 +1,10 @@
 +++
-title = "Masses and Springs"
+title = "Handling Self-Collisions"
 template = "page.html"
 [extra]
 mathjax = "tex-mml"
 +++
 
-# Task 4: Handling self-collisions
 ## Overview
 In this task, we prevented the cloth from intersecting itself.
 To do this, we check if two point masses ever get too close to each other (their distance is less than the thickness of the cloth), and if they are, force them apart.
